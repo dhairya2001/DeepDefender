@@ -1,53 +1,68 @@
-# Real vs. Fake Classifier
+# DeepDefender
 
-This project implements a machine learning pipeline to classify videos as either **real** or **fake**, using the FaceForensics++ dataset. The entire workflow is encapsulated in the Jupyter notebook `Real_Fake_Classifier.ipynb`.
+DeepDefender is a comprehensive deep learning-based system designed to detect and classify videos as either **real** or **fake**. Leveraging the FaceForensics++ dataset, this project implements a custom Multi-Layer Perceptron (MLP) architecture to analyze frame-level features and determine the authenticity of video content. Additionally, it includes a user-friendly Streamlit web application for real-time inference.
+
+## Table of Contents
+
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Setup Instructions](#setup-instructions)
+- [Model Configuration](#model-configuration)
+- [Evaluation Metrics](#evaluation-metrics)
+- [Training & Inference](#training--inference)
+- [Streamlit Web Application](#streamlit-web-application)
+- [Dataset](#dataset)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
+
+## Features
+
+- Preprocesses video data from the FaceForensics++ dataset.
+- Resizes video frames to 224×224 for uniform input.
+- Extracts frame-level features and trains a custom MLP classifier.
+- Utilizes mixed-precision training for faster computation on GPUs.
+- Logs evaluation metrics: Accuracy, Precision, Recall, F1 Score, and Confusion Matrix.
+- Implements utilities such as early stopping and learning rate scheduling.
+- Provides a Streamlit web application for real-time video classification.
 
 ## Project Structure
 
 ```
 DeepDefender/
-├── Real_Fake_Classifier.ipynb  # Main notebook for model training and evaluation
+├── Real_Fake_Classifier.ipynb  # Jupyter notebook for model training and evaluation
+├── train.py                    # Script for training the model
+├── prediction.py               # Script for making predictions
+├── Deepdefender.py             # Streamlit web application
+├── model/                      # Directory containing model architecture and weights
 ├── FF++/                       # Dataset directory with 'real', 'fake', and 'eval_videos' folders
 ├── output/                     # Directory for saved model checkpoints and logs
+├── requirements.txt            # Python dependencies
 └── README.md                   # Project documentation
 ```
 
-## Features
-
-- Preprocesses video data from the FaceForensics++ dataset
-- Resizes video frames to 224×224 for uniform input
-- Extracts frame-level features and trains a custom Multi-Layer Perceptron (MLP) classifier
-- Utilizes mixed-precision training for faster computation on GPUs
-- Logs evaluation metrics: Accuracy, Precision, Recall, F1 Score, and Confusion Matrix
-- Implements utilities such as early stopping and learning rate scheduling
-
 ## Setup Instructions
 
-1. Clone the repository:
+1. **Clone the repository:**
 
    ```bash
    git clone https://github.com/dhairya2001/DeepDefender.git
    cd DeepDefender
    ```
 
-2. Install required packages:
+2. **Create a virtual environment (optional but recommended):**
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install required packages:**
 
    ```bash
    pip install -r requirements.txt
    ```
 
    *(You can generate this file using `pip freeze > requirements.txt` if needed.)*
-
-## Requirements
-
-The project depends on the following Python packages:
-
-- `torch`, `torchvision`, `timm`
-- `opencv-python`
-- `numpy`, `pandas`
-- `matplotlib`, `seaborn`
-- `scikit-learn`
-- `tqdm`
 
 ## Model Configuration
 
@@ -90,13 +105,41 @@ All metrics are visualized using `matplotlib` and `seaborn`.
 
 ## Training & Inference
 
-To train or evaluate the model, open the notebook in Jupyter and run all cells:
+To train or evaluate the model, you can use the provided Jupyter notebook or Python scripts:
+
+**Using Jupyter Notebook:**
 
 ```bash
 jupyter notebook Real_Fake_Classifier.ipynb
 ```
 
+**Using Python Scripts:**
+
+- **Training:**
+
+  ```bash
+  python train.py
+  ```
+
+- **Prediction:**
+
+  ```bash
+  python prediction.py --input <path_to_video>
+  ```
+
 The best-performing model is saved to the `output/` directory during training.
+
+## Streamlit Web Application
+
+The project includes a Streamlit web application for real-time video classification.
+
+**To run the application:**
+
+```bash
+streamlit run Deepdefender.py
+```
+
+This will launch a local web server where you can upload videos and receive classification results in real-time.
 
 ## Dataset
 
@@ -106,7 +149,11 @@ This project uses the [FaceForensics++ dataset](https://www.kaggle.com/datasets/
 FF++/
 ├── real/
 ├── fake/
-└── eval_videos/
 ```
 
-Make sure the videos or frames are preprocessed and placed in the appropriate directories before training.
+Ensure that the videos or frames are preprocessed and placed in the appropriate directories before training.
+
+## Acknowledgements
+
+- [FaceForensics++ Dataset](https://github.com/ondyari/FaceForensics)
+- PyTorch, timm, and the broader open-source machine learning community
